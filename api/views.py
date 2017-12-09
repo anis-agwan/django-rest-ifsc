@@ -32,28 +32,27 @@ class ImportView(View):
             print("IFSC-- {}".format(ifsc))
             if not ifsc:
                 break
-            if ifsc not in  ifsc_list:
-                bank_object, created = Bank.objects.get_or_create(
-                    name=bank_name
-                )
-                branch_defaults = {
-                    'name': branch,
-                    'bank': bank_object,
-                    'address': address,
-                    'city': city,
-                    'district': district,
-                    'state': state    
-                }
-            
-                branch_object, created = Branch.objects.update_or_create(
-                    ifsc=ifsc, defaults=branch_defaults
-                )
-                if created:
-                    print("row created{}".format(branch_defaults))
+            bank_object, created = Bank.objects.get_or_create(
+                name=bank_name
+            )
+            branch_defaults = {
+                'name': branch,
+                'bank': bank_object,
+                'address': address,
+                'city': city,
+                'district': district,
+                'state': state    
+            }
+        
+            branch_object, created = Branch.objects.update_or_create(
+                ifsc=ifsc, defaults=branch_defaults
+            )
+            if created:
+                print("row created{}".format(branch_defaults))
 
-                print("No of Rows imported - {} - {} ".format(count, branch_defaults))
-                
-                count += 1
+            print("No of Rows imported - {} - {} ".format(count, branch_defaults))
+            
+            count += 1
         context = {
             'count': count}
         messages.success(request, "{} rows imported.".format(count))
