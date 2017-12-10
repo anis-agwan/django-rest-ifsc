@@ -70,7 +70,7 @@ class DetailView(View):
 class ListView(View):
     def get(self, request, city, bank):
         branch_qset = Branch.objects.filter(
-            city__iexact=city, bank__name__iexact=bank)
+            city__iexact=city, bank__name__icontains=bank)
         serializer = BranchSerializer(branch_qset, many=True)
         return JsonResponse(serializer.data, safe=False)
 
